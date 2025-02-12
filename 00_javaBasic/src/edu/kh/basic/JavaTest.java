@@ -3,7 +3,7 @@ package edu.kh.basic;
 public class JavaTest {
 	
 	//git 테스트! 집에서 코드 변경해보기
-	
+	//2번째 집에서 코드 변경 테스트
 	
 	
 	//main 작성후 ctrl + space -> 자동완성 기능
