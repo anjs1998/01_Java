@@ -2,6 +2,10 @@ package edu.kh.basic;
 // class : 자바 코드가 작성되는 영역
 public class JavaTest {
 	
+	//git 테스트! 집에서 코드 변경해보기
+	
+	
+	
 	//main 작성후 ctrl + space -> 자동완성 기능
 	public static void main(String[] args) {
 		//실행 단축키 : ctrl + f11
