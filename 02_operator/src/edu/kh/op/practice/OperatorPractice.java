@@ -61,6 +61,9 @@ public class OperatorPractice {
 		int english = sc.nextInt(); 
 		sc.nextLine();
 		
+		boolean result = (korean >= 40)&& (english >= 40) && ( math >= 40) && (korean + math + english)/3 >= 60;
+		System.out.println(result?"합격":"불합격");
+		
 		System.out.println("합계 : " + (korean + math + english));
 		System.out.println("평균 : " + (korean + math + english) / 3.0f);
 	}
