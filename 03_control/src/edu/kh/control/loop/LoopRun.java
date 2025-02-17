@@ -9,7 +9,8 @@ public class LoopRun {
 		//forEx.ex5();
 		//forEx.ex6();
 		//forEx.ex7();
-		forEx.ex8();
-		
+		//forEx.ex8();
+		WhileExample whileEx = new WhileExample();
+		whileEx.ex1();
 	}
 }
