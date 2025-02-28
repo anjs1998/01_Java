@@ -1,6 +1,8 @@
 package edu.kh.collection.pack1.model.service;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
@@ -9,6 +11,12 @@ import edu.kh.collection.pack1.model.dto.Student;
 
 
 
+/**
+ * 
+ */
+/**
+ * 
+ */
 public class StudentService {
 	//java.util.List 인터페이스 : List에 반드시 필요한 필수기능을 모아둔 인터페이스
 	// * 인터페이스 객체 생성 X, 부모 참조변수의 역할 O
@@ -94,11 +102,11 @@ public class StudentService {
 				case 1: System.out.println(addStudent()); break;
 				case 2: selectAll();  break;
 				case 3: updateStudent(); break;
-				case 4: /*removeStudent()*/; break;
-				case 5: /*searchName1()*/; break;
-				case 6: /*searchName2()*/; break;
-				case 7: /*sortByAge()*/; break;
-				case 8: /*sortByName()*/; break;
+				case 4: removeStudent(); break;
+				case 5: searchName1(); break;
+				case 6: searchName2(); break;
+				case 7: sortByAge(); break;
+				case 8: sortByName(); break;
 				case 0: System.out.println("프로그램 종료.."); break;
 				default : System.out.println("메뉴에 작성된 번호만 입력하세요!");
 				
@@ -288,4 +296,130 @@ public class StudentService {
 		
 	}
 	
+	/***
+	 * 이름이 일치하는 학생을 찾아서 조회하는 메서드(완전일치)
+	 * 
+	 * -검색할 이름을 입력받아 studentList에서 꺼내온
+	 * Student 객체의 name값이 같은지 비료
+	 * 
+	 * -일치하는 경우 Student 객체 출력
+	 * -일치하는 게 없다면 "검색 결과가 없습니다" 출력
+	 * 
+	 */
+	public void searchName1() {
+		System.out.println("====학생 검색 (이름 완전일치)====");
+		System.out.println("검색할 이름 입력 : ");
+		String input = sc.next();
+		
+		boolean flag = true;
+		//향상된 for문
+		for(Student std : studentList) {
+			
+			if(input.equals(std.getName())) { // 이름이 일치하는 경우
+				System.out.println(std); //std.toString();
+				flag = false;
+				
+			}
+			
+			if(flag) {
+				System.out.println("검색 결과 없음");
+			}
+		}
+			
+	}
+	/**
+	 * 6. 이름에 특정 문자열이 포함되는 학생을 찾아 조회하는 메서드
+	 * 문자열 입력받아 studentList에서 꺼내온 Student객체의 name값에 포함되는 문자열인지 검사
+	 * 
+	 * -포함되는 학생 객체를 찾은경우 student객체 출력
+	 * -없다면 "검색 결과 없음"출력
+	 * 
+	 * String.equals()대신  String.contains()사용
+	 * String에 매개변수 문자열이 포함되어 있으며 true
+	 * ***/
+	public void searchName2() {
+		System.out.println("===학생 검색(이름 부분 포함)====");
+		String input = sc.next();
+		
+		boolean flag = true;
+		for(Student std : studentList) {
+			if(std.getName().contains(input) ){ //std.getName()에 input이 포함되어 있느냐?
+				System.out.println(std);
+				
+				flag = false;
+				
+				
+			}
+			
+		}
+		if(flag) {System.out.println("검색 결과 없음."); }
+		
+		
+		
+	}
+	//정렬을 위해 Students implements Comparable을 해야한다.
+	/**
+	 * List를 정렬하는 방법
+	 * 
+	 * 방법 1 : Comparable 인터페이스 상속받아 compareTo() 메서드 재정의
+	 * Student에 Comparable 인터페이스 상속받아 오버라이딩한 compareTo에
+	 * 정의한 대로 정렬됨(나이 오름차순, 내림차순..)
+	 * 
+	 * 방법 2: Comparator 클래스에 의한 정렬 compare()사용 (익명 내부 클래스)
+	 * 익명 내부 클래스 : 이름이 없는 클래스를 즉석에서 선언하여 한번만 사용할 목적으로 작성하는것
+	 * 객체를 생성하면서 바로 구현 내옹을 정의 가능
+	 * 익명 내부클래스 장점
+	 * 
+	 *  코드 간결화, (별도로 클래스를 만들지 않아도 될떄 사용)
+	 *  즉시 사용 가능(한번만 사용할 comparator등을 정의할때 유용함)
+	 *  지역화 : 특정 메서드 안에서만 필요할 때
+	 *  
+	 *  
+	 * **/
+	/*
+	 * 7. 나이에 따라 오름차순 정렬
+	 * 
+	 * 
+	 * ****/
+	
+	public void sortByAge() {
+		
+		
+		Collections.sort(studentList);
+		
+		for(Student std : studentList) {
+			System.out.println(std);
+		}
+		
+	}
+	/*이름에 따라 정렬(가나다순)**/
+	public void sortByName() {
+		Collections.sort(studentList, new Comparator<Student>() {// 익명 내부 클래스 
+			//여기 부분의 중괄호는 Comparator 인터페이스를 상속받아 구현한 익명 클래스!
+			//new 연산자를 이용해서 익명 내부클래스를 선언하여 바로 활용하는 코드이다.
+			//익명 내부클래스는 student객체가 만들어질때 같이 만들어진다.
+			@Override
+			public int compare(Student o1, Student o2) {
+				// 이름비교
+				return o1.getName().compareTo(o2.getName());
+			
+				//String.compareTo
+				//name은 String형이라 compareTo()로 비교
+				//String.compareTo() : 원래는 자바에서 객체를 비교하는 메서드
+				//compareTo() 를 String 클래스 내부에서 재정의를 해둠.
+				
+				//compareTo() : 두 객체를 비교하고 순서를 결정함
+				//반환값 : 0(같음), 양수(왼쪽객체가 더 큼), 음수(왼쪽객체가 더 작음)
+				
+			} 
+			
+			
+		});
+		for(Student std : studentList) {
+			System.out.println(std);
+		}
+		
+	}
 }
+	
+
