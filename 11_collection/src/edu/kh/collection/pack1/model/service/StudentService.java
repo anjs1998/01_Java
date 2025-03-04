@@ -412,8 +412,6 @@ public class StudentService {
 				//반환값 : 0(같음), 양수(왼쪽객체가 더 큼), 음수(왼쪽객체가 더 작음)
 				
 			} 
-			
-			
 		});
 		for(Student std : studentList) {
 			System.out.println(std);
