@@ -109,6 +109,7 @@ public class ToyFactory {
 		
 		System.out.println("선택 :");
 		int menu = sc.nextInt();
+		sc.nextLine();
 		switch(menu) {
 		
 			case 1: selectAll(); break;
@@ -220,7 +221,8 @@ public class ToyFactory {
 	
 	}
 	
-	public void addNewIngredient() {	// exception 해결할것
+	public void addNewIngredient() {	// 1. exception 해결할것 2. 재료 추가시 모든 장난감에 전부 적용되어야 함
+		
 		System.out.println("<재료 추가>");
 		System.out.println("---현재 등록된 재료---");
 		for (Map.Entry<Integer, String> entry : ingredientMap.entrySet()) {
@@ -236,19 +238,39 @@ public class ToyFactory {
 			System.out.println("덮어쓰시겟습니까?(Y, N)");
 			char choice = sc.nextLine().charAt(0);
 			if(choice == 'Y' || choice == 'y') {  ingredientMap.put(keyInput, stringInput);
-			
-				System.out.println("새로운 재료가 성공적으로 등록되엇습니다.");selectAllIngredientMap(); return;}
+				Iterator<Toy> toysSetIterator = toys.iterator();
+				while(toysSetIterator.hasNext()) {
+					toys.add(
+							addIngredientsInToy(toysSetIterator.next(), stringInput)
+							);
+				
+				}
+				System.out.println("새로운 재료가 성공적으로 등록되엇습니다."); return;
+				
+				
+				
+			}
 			else{selectAllIngredientMap();return ;}
 			
 		}
 		
-		ingredientMap.put(keyInput, stringInput);
+		ingredientMap.put(keyInput, stringInput);/*
+		Iterator<Toy> toysSetIterator = toys.iterator();
+		while(toysSetIterator.hasNext()) {
+			toys.add(
+					addIngredientsInToy(toysSetIterator.next(), stringInput)
+					);
+		
+		}*/ // ConcurrentModificationException
+		
 		//selectAllIngredientMap();
+		System.out.println(toys);
 		/*System.out.println(value);
 		if(value.equals( stringInput ))*/ System.out.println("새로운 재료가 성공적으로 등록되엇습니다.");
-		
+		                                                          
 		
 	}
+
 	
 	public void removeIngredient() {
 		System.out.println("<재료 삭제>");
@@ -262,7 +284,7 @@ public class ToyFactory {
 		for (Map.Entry<Integer, String> entry : ingredientMap.entrySet()) {
 			if(entry.getValue().equals(valueInput)) { 
 				
-				System.out.println("재료 "+ ingredientMap.remove(entry.getKey())+"가 성공적으로 제거되었습니다."); 
+				System.out.println("재료 "+ ingredientMap.remove(entry.getKey())+"이/가 성공적으로 제거되었습니다."); 
 				/*selectAllIngredientMap();*/     //debug
 				return;
 			}
@@ -274,5 +296,15 @@ public class ToyFactory {
 		for (Map.Entry<Integer, String> entry : ingredientMap.entrySet()) {
 		System.out.println( entry.getKey() + ": " + entry.getValue() );
 		}
+	}
+	
+	public Toy addIngredientsInToy(Toy t, String value) {
+		Set<String> ingredientsResult = t.getIngredients();
+		ingredientsResult.add(value);
+		Toy result = new Toy(t.getName(), t.getAgeLimit(), t.getPrice(), t.getColor(), t.getDateManufactured(),
+				ingredientsResult);
+		
+		return result;
+		
 	}
 }
